@@ -16,7 +16,7 @@ void print_menu(void)
 }
 
 /**
- * main - Entry point for the simple calculator program.
+ * main - Entry point for the simple calculator program with input recovery.
  *
  * Return: Always 0 (Success).
  */
@@ -29,10 +29,11 @@ int main(void)
 	{
 		print_menu();
 		printf("Choice: ");
+		
+		/* فحص خيار القائمة وتطهير المخزن إذا فشل */
 		if (scanf("%d", &choice) != 1)
 		{
-			/* Handle non-numeric input gracefully to prevent infinite loops */
-			printf("Invalid choice\n\n");
+			printf("Invalid choice\n");
 			while (getchar() != '\n')
 				;
 			continue;
@@ -40,7 +41,7 @@ int main(void)
 
 		if (choice < 0 || choice > 4)
 		{
-			printf("Invalid choice\n\n");
+			printf("Invalid choice\n");
 			continue;
 		}
 
@@ -50,23 +51,40 @@ int main(void)
 			break;
 		}
 
-		printf("A: ");
-		scanf("%lf", &a);
-		printf("B: ");
-		scanf("%lf", &b);
+		/* فحص واستعادة المدخل الأول A */
+		while (1)
+		{
+			printf("A: ");
+			if (scanf("%lf", &a) == 1)
+				break;
+			printf("Invalid number\n");
+			while (getchar() != '\n')
+				;
+		}
+
+		/* فحص واستعادة المدخل الثاني B */
+		while (1)
+		{
+			printf("B: ");
+			if (scanf("%lf", &b) == 1)
+				break;
+			printf("Invalid number\n");
+			while (getchar() != '\n')
+				;
+		}
 
 		if (choice == 1)
-			printf("Result: %g\n\n", a + b);
+			printf("Result: %g\n", a + b);
 		else if (choice == 2)
-			printf("Result: %g\n\n", a - b);
+			printf("Result: %g\n", a - b);
 		else if (choice == 3)
-			printf("Result: %g\n\n", a * b);
+			printf("Result: %g\n", a * b);
 		else if (choice == 4)
 		{
 			if (b == 0)
-				printf("Error: division by zero\n\n");
+				printf("Error: division by zero\n");
 			else
-				printf("Result: %g\n\n", a / b);
+				printf("Result: %g\n", a / b);
 		}
 	}
 
