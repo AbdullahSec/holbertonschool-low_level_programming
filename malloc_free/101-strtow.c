@@ -51,7 +51,7 @@ static void free_words(char **words, int i)
 char **strtow(char *str)
 {
 	char **words;
-	int i = 0, j, k, len, num_words;
+	int i = 0, j, len, num_words;
 
 	if (str == NULL || *str == '\0')
 		return (NULL);
