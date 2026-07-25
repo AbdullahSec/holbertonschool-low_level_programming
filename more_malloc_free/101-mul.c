@@ -5,7 +5,7 @@
 #endif
 
 /**
- * print_error - Prints "Error" followed by newline and exits with 98.
+ * print_error - Prints "Error" followed by a newline and exits with 98.
  */
 static void print_error(void)
 {
@@ -18,8 +18,8 @@ static void print_error(void)
 }
 
 /**
- * is_digit - Checks if a string contains only digits.
- * @s: String to check.
+ * is_digit - Checks if a string consists only of digits.
+ * @s: String to evaluate.
  *
  * Return: 1 if all digits, 0 otherwise.
  */
@@ -37,8 +37,8 @@ static int is_digit(char *s)
 }
 
 /**
- * _strlen - Returns the length of a string.
- * @s: String to evaluate.
+ * _strlen - Computes string length.
+ * @s: Input string.
  *
  * Return: Length of string.
  */
