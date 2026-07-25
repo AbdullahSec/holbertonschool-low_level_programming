@@ -1,66 +1,77 @@
 #include <stdlib.h>
-
-#if __has_include("main.h")
 #include "main.h"
-#endif
-
-int _putchar(char c);
 
 /**
- * print_error - Prints "Error" followed by a newline and exits with 98.
+ * is_digit - checks if a string contains only digits
+ * @s: string to check
+ *
+ * Return: 1 if only digits, 0 otherwise
  */
-static void print_error(void)
+int is_digit(char *s)
 {
-	char *err = "Error\n";
-	int i;
+	int i = 0;
 
-	for (i = 0; err[i] != '\0'; i++)
-		_putchar(err[i]);
-	exit(98);
+	while (s[i])
+	{
+		if (s[i] < '0' || s[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /**
- * _strlen - Computes string length and validates if string contains only digits.
- * @s: Input string.
+ * _strlen - returns the length of a string
+ * @s: string to measure
  *
- * Return: Length of string.
+ * Return: length of the string
  */
-static int _strlen(char *s)
+int _strlen(char *s)
 {
 	int len = 0;
 
-	if (!s || !*s)
-		print_error(); /* Fails on NULL or empty strings */
-
 	while (s[len])
-	{
-		if (s[len] < '0' || s[len] > '9')
-			print_error();
 		len++;
-	}
 	return (len);
 }
 
 /**
- * perform_mul - Handles the core multiplication math.
- * @s1: First string.
- * @s2: Second string.
- * @result: Array to store the result.
- * @len1: Length of s1.
- * @len2: Length of s2.
+ * errors - prints Error and exits with status 98
  */
-static void perform_mul(char *s1, char *s2, int *result, int len1, int len2)
+void errors(void)
 {
-	int i, j, carry, digit1, digit2;
+	char *msg = "Error\n";
+	int i = 0;
 
-	for (i = len1 - 1; i >= 0; i--)
+	while (msg[i])
 	{
-		digit1 = s1[i] - '0';
+		_putchar(msg[i]);
+		i++;
+	}
+	exit(98);
+}
+
+/**
+ * multiply - fills result array with product of s1 and s2
+ * @s1: first number string
+ * @s2: second number string
+ * @result: output array
+ * @len: length of result array
+ */
+void multiply(char *s1, char *s2, int *result, int len)
+{
+	int i, j, carry, d1, d2;
+
+	for (i = 0; i < len; i++)
+		result[i] = 0;
+	for (i = _strlen(s1) - 1; i >= 0; i--)
+	{
+		d1 = s1[i] - '0';
 		carry = 0;
-		for (j = len2 - 1; j >= 0; j--)
+		for (j = _strlen(s2) - 1; j >= 0; j--)
 		{
-			digit2 = s2[j] - '0';
-			carry += result[i + j + 1] + (digit1 * digit2);
+			d2 = s2[j] - '0';
+			carry += result[i + j + 1] + (d1 * d2);
 			result[i + j + 1] = carry % 10;
 			carry /= 10;
 		}
@@ -70,42 +81,45 @@ static void perform_mul(char *s1, char *s2, int *result, int len1, int len2)
 }
 
 /**
- * main - Multiplies two positive numbers passed as command-line arguments.
- * @argc: Argument count.
- * @argv: Argument vector.
+ * print_result - prints the result array without leading zeros
+ * @result: array of digits
+ * @len: length of array
+ */
+void print_result(int *result, int len)
+{
+	int i, started = 0;
+
+	for (i = 0; i < len; i++)
+	{
+		if (result[i])
+			started = 1;
+		if (started)
+			_putchar(result[i] + '0');
+	}
+	if (!started)
+		_putchar('0');
+	_putchar('\n');
+}
+
+/**
+ * main - multiplies two positive numbers
+ * @argc: argument count
+ * @argv: argument vector
  *
- * Return: Always 0 (Success).
+ * Return: 0 on success, 98 on error
  */
 int main(int argc, char *argv[])
 {
-	char *s1, *s2;
-	int len1, len2, len, i, *result, start = 0;
+	int len, *result;
 
-	if (argc != 3)
-		print_error();
-
-	s1 = argv[1];
-	s2 = argv[2];
-	len1 = _strlen(s1);
-	len2 = _strlen(s2);
-	len = len1 + len2;
-
+	if (argc != 3 || !is_digit(argv[1]) || !is_digit(argv[2]))
+		errors();
+	len = _strlen(argv[1]) + _strlen(argv[2]) + 1;
 	result = malloc(sizeof(int) * len);
-	if (result == NULL)
-		print_error();
-
-	for (i = 0; i < len; i++)
-		result[i] = 0;
-
-	perform_mul(s1, s2, result, len1, len2);
-
-	while (start < len - 1 && result[start] == 0)
-		start++;
-
-	for (i = start; i < len; i++)
-		_putchar(result[i] + '0');
-	_putchar('\n');
-
+	if (!result)
+		return (1);
+	multiply(argv[1], argv[2], result, len);
+	print_result(result, len);
 	free(result);
 	return (0);
-}
+
