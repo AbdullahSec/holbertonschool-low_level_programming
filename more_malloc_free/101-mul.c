@@ -21,11 +21,14 @@ static void print_error(void)
  * is_digit - Checks if a string consists only of digits.
  * @s: String to evaluate.
  *
- * Return: 1 if all digits, 0 otherwise.
+ * Return: 1 if all digits, 0 otherwise or if empty.
  */
 static int is_digit(char *s)
 {
 	int i = 0;
+
+	if (s[0] == '\0')
+		return (0); /* Reject empty strings */
 
 	while (s[i])
 	{
