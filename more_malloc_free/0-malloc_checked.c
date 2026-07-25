@@ -1,5 +1,8 @@
-#include "main.h"
 #include <stdlib.h>
+
+#if __has_include("main.h")
+#include "main.h"
+#endif
 
 /**
  * malloc_checked - Allocates memory using malloc.
