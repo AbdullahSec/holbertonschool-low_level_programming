@@ -11,4 +11,5 @@ main:
 	mov rsi, msg
 	mov rdx, len
 	syscall
+	mov rax, 0
 	ret
