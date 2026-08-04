@@ -91,3 +91,10 @@ Correction: b = a creates an alias, not a copy. There is one heap block and one
 valid owner. After free(a), any access through b is use-after-free. A real copy
 would need a second malloc plus an element-by-element copy, which this program
 never does.
+
+## Note on AI usage
+
+AI tools were used only to generate initial draft explanations and memory
+diagrams. Every claim was then verified against the source code and the actual
+Valgrind runs. AI output was treated as a hypothesis to check, not as authority;
+the documented mistake above is one case where that checking caught an error.
